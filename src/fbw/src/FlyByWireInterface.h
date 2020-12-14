@@ -21,9 +21,12 @@
 #include <MSFS/Legacy/gauges.h>
 #include <SimConnect.h>
 
+#include "AutopilotLaws.h"
+#include "AutopilotStateMachine.h"
 #include "FlightDataRecorder.h"
 #include "FlyByWire.h"
 #include "InterpolatingLookupTable.h"
+#include "RateLimiter.h"
 #include "SimConnectInterface.h"
 
 class FlyByWireInterface {
@@ -35,6 +38,7 @@ class FlyByWireInterface {
   bool update(double sampleTime);
 
  private:
+  const std::string MODEL_CONFIGURATION_FILEPATH = "\\work\\ModelConfiguration.ini";
   const std::string THROTTLE_CONFIGURATION_FILEPATH = "\\work\\ThrottleConfiguration.ini";
 
   bool isThrottleLoggingEnabled = false;
@@ -49,11 +53,22 @@ class FlyByWireInterface {
 
   double previousSimulationTime = 0;
 
+  bool autopilotStateMachineEnabled = false;
+  bool autopilotLawsEnabled = false;
+  bool flyByWireEnabled = false;
+
+  bool pauseDetected = false;
+
   FlightDataRecorder flightDataRecorder;
 
   SimConnectInterface simConnectInterface;
-  FlyByWireModelClass model;
+  FlyByWireModelClass flyByWire;
+  AutopilotStateMachineModelClass autopilotStateMachine;
+  AutopilotLawsModelClass autopilotLaws;
   InterpolatingLookupTable throttleLookupTable;
+
+  RateLimiter rateLimiterEngine_1;
+  RateLimiter rateLimiterEngine_2;
 
   ID idSideStickPositionX;
   ID idSideStickPositionY;
@@ -69,9 +84,55 @@ class FlyByWireInterface {
   ID idThrottlePosition_1;
   ID idThrottlePosition_2;
 
-  bool getModelInputDataFromSim(double sampleTime);
+  ID idFmaLateralMode;
+  ID idFmaLateralArmed;
+  ID idFmaVerticalMode;
+  ID idFmaVerticalArmed;
 
-  bool writeModelOuputDataToSim();
+  ID idFlightDirectorBank;
+  ID idFlightDirectorPitch;
+  ID idFlightDirectorYaw;
+
+  ID idAutopilotActiveAny;
+  ID idAutopilotActive_1;
+  ID idAutopilotActive_2;
+
+  ID idAutothrustMode;
+
+  ID idFcuTrkFpaModeActive;
+  ID idFcuSelectedFpa;
+  ID idFcuSelectedVs;
+  ID idFcuSelectedHeading;
+
+  ID idFcuLocModeActive;
+  ID idFcuApprModeActive;
+  ID idFcuModeReversionActive;
+
+  ID idFlightGuidanceCrossTrackError;
+  ID idFlightGuidanceTrackAngleError;
+
+  ID idFlightPhase;
+  // ID idFmgcFlightPlanAvailable;
+  ID idFmgcV2;
+  ID idFmgcV_APP;
+  ID idFmgcV_LS;
+  ID idFmgcAltitudeConstraint;
+  ID idFmgcThrustReductionAltitude;
+  ID idFmgcThrustReductionAltitudeGoAround;
+  ID idFmgcAccelerationAltitude;
+  ID idFmgcAccelerationAltitudeEngineOut;
+  ID idFmgcAccelerationAltitudeGoAround;
+
+  ap_raw_laws_input autopilotStateMachineOutput;
+  ap_raw_output autopilotLawsOutput;
+
+  bool readDataAndLocalVariables(double sampleTime);
+
+  bool updateAutopilotStateMachine(double sampleTime);
+
+  bool updateAutopilotLaws(double sampleTime);
+
+  bool updateFlyByWire(double sampleTime);
 
   void initializeThrottles();
 

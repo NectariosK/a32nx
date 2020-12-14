@@ -1,5 +1,37 @@
 # Documentation
 
+## Custom Autopilot System
+
+⚠️ This is work in progress, there are still issues, see section Known issues below!
+
+### Known issues
+
+⚠️ The custom autopilot system is not yet on study level. In order to achieve this level a longer effort is needed. The system is a large improvement over the default implementation and there is no reason to hold it back longer than necessary.
+
+ℹ️ Tuning is a large effort to be done for differnt flight conditions like speed, configuration, weight and center-of-gravity (CG). You can help by reporting issues in certain flight conditions. Please take note of important conditions mentioned before.
+
+#### Not solved or missing
+
+- :x: custom ATHR system is not yet available
+- :x: due to missing custom ATHR system, the (OP) CLB/DES modes might need manual thrust control
+      -> a simple and hacky workaround has been added though
+- :x: after a longer pause the custom autopilot system can goes crazy
+- :x: due to lack of VNAV, DES mode is currently only using SPD/MACH
+- :x: CLB and DES do not respect altitude constraints (contraints are supported but are lacking proper input)
+- :x: Go Around modes are missing
+- :x: Transitions might not be as they should
+- :x: FD off/on does not deactivate all FMA items
+- :x: Engagement of AP with FD off is incorrect
+- :x: AP disconnect does not trigger master warning etc.
+- :x: AP does not disconnect with rudder or sidestick input
+- :x: NAV mode can always be armed or engaged
+- :x: NAV mode being armed might show dashes in the FCU instead of selected HDG
+- :x: Engine out operations are not yet considered
+
+#### Considered solved
+
+- :heavy_check_mark: In manual approach LOC and G/S might be lost too fast with mode reversion to HDG + V/S
+
 ## Custom Fly-By-Wire System
 
 ⚠️ This is work in progress, there are still issues, see section Known issues below!

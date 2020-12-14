@@ -15,6 +15,7 @@ pushd "${DIR}/obj"
 clang \
   -c \
   -Wno-unused-command-line-argument \
+  -Wno-implicit-function-declaration \
   --sysroot "${MSFS_SDK}/WASM/wasi-sysroot" \
   -target wasm32-unknown-wasi \
   -D_MSFS_WASM=1 \
@@ -47,6 +48,8 @@ popd
 # compile c++ code
 clang++ \
   -Wno-unused-command-line-argument \
+  -Wno-ignored-attributes \
+  -Wno-macro-redefined \
   --sysroot "${MSFS_SDK}/WASM/wasi-sysroot" \
   -target wasm32-unknown-wasi \
   -D_MSFS_WASM=1 \
@@ -70,10 +73,20 @@ clang++ \
   -I "${DIR}/src/interface" \
   "${DIR}/src/interface/SimConnectInterface.cpp" \
   -I "${DIR}/src/model" \
-  "${DIR}/src/model/FlyByWire.cpp" \
+  "${DIR}/src/model/AutopilotLaws_data.cpp" \
+  "${DIR}/src/model/AutopilotLaws.cpp" \
+  "${DIR}/src/model/AutopilotStateMachine_data.cpp" \
+  "${DIR}/src/model/AutopilotStateMachine.cpp" \
+  "${DIR}/src/model/div_s32.cpp" \
+  "${DIR}/src/model/Double2MultiWord.cpp" \
   "${DIR}/src/model/FlyByWire_data.cpp" \
+  "${DIR}/src/model/FlyByWire.cpp" \
   "${DIR}/src/model/look1_binlxpw.cpp" \
   "${DIR}/src/model/look2_binlxpw.cpp" \
+  "${DIR}/src/model/mod_tnBo173x.cpp" \
+  "${DIR}/src/model/MultiWordIor.cpp" \
+  "${DIR}/src/model/rt_modd.cpp" \
+  "${DIR}/src/model/uMultiWord2Double.cpp" \
   -I "${DIR}/src/zlib" \
   "${DIR}/src/zlib/zfstream.cc" \
   "${DIR}/src/FlyByWireInterface.cpp" \
