@@ -70,6 +70,8 @@ struct SimData {
   double total_air_temperature_celsius;
   double latitude_deg;
   double longitude_deg;
+  double throttle_lever_1_pos;
+  double throttle_lever_2_pos;
   double engine_1_thrust_lbf;
   double engine_2_thrust_lbf;
 };
@@ -102,7 +104,7 @@ struct SimOutputThrottles {
 };
 
 struct SimInputClientDataAutopilot {
-  bool enableAutopilot;
+  unsigned long long enableAutopilot;
   double flightDirectorTheta;
   double autopilotTheta;
   double flightDirectorPhi;

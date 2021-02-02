@@ -74,6 +74,8 @@ typedef struct {
   real_T longitude_deg;
   real_T engine_1_thrust_lbf;
   real_T engine_2_thrust_lbf;
+  real_T thrust_lever_1_pos;
+  real_T thrust_lever_2_pos;
 } base_raw_data;
 
 #endif
@@ -177,6 +179,8 @@ typedef struct {
   real_T longitude_deg;
   real_T engine_1_thrust_lbf;
   real_T engine_2_thrust_lbf;
+  real_T thrust_lever_1_pos;
+  real_T thrust_lever_2_pos;
 } base_data;
 
 #endif
@@ -209,8 +213,10 @@ typedef struct {
 typedef struct {
   real_T delta_eta_deg;
   real_T in_flight;
+  real_T in_rotation;
   real_T in_flare;
   real_T in_flight_gain;
+  real_T in_rotation_gain;
   real_T nz_limit_up_g;
   real_T nz_limit_lo_g;
   boolean_T eta_trim_deg_should_freeze;
@@ -223,6 +229,16 @@ typedef struct {
   real_T flare_Theta_c_deg;
   real_T flare_Theta_c_rate_deg_s;
 } base_pitch_data_computed;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_base_pitch_rotation_
+#define DEFINED_TYPEDEF_FOR_base_pitch_rotation_
+
+typedef struct {
+  real_T qk_c_deg_s;
+  real_T eta_deg;
+} base_pitch_rotation;
 
 #endif
 
@@ -270,6 +286,7 @@ typedef struct {
 
 typedef struct {
   base_pitch_data_computed data_computed;
+  base_pitch_rotation law_rotation;
   base_pitch_normal law_normal;
   base_pitch_law_output vote;
   base_pitch_integrated integrated;
