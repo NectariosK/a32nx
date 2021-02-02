@@ -38,7 +38,7 @@ class FlightDataRecorder {
   int sampleCounter = false;
   int maximumSampleCounter = 0;
   int maximumFileCount = 0;
-  gzofstream* fileStream;
+  gzofstream* fileStream = nullptr;
 
   void manageFlightDataRecorderFiles();
 

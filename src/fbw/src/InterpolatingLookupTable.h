@@ -29,6 +29,6 @@ class InterpolatingLookupTable {
 
  private:
   std::vector<std::pair<double, double>> mappingTable;
-  double mappingMinimum;
-  double mappingMaximum;
+  double mappingMinimum = 0;
+  double mappingMaximum = 0;
 };

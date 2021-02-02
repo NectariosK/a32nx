@@ -137,8 +137,6 @@ DetentTakeOffGoAround = 1.00
 
 #### Not solved or missing
 
-- :x: Normal Law (Pitch) creates a too small pitch rate on low speed or g-load on higher speeds
-- :x: Rotation Law
 - :x: High speed protection
 - :x: High angle of attack (AoA) protection
 - :x: Alternative Law
@@ -147,6 +145,8 @@ DetentTakeOffGoAround = 1.00
 
 #### Considered solved
 
+- :heavy_check_mark: Normal Law (Pitch) creates a too small pitch rate on low speed or g-load on higher speeds
+- :heavy_check_mark: Rotation Law including tailstrike protection
 - :heavy_check_mark: pitch normal law (C* law) sometimes oscillates on low speed
 - :heavy_check_mark: yaw damper / rudder control missing
 - :heavy_check_mark: pitch attitude protections can oscillate

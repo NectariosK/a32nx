@@ -180,6 +180,8 @@ bool FlyByWireInterface::getModelInputDataFromSim(double sampleTime) {
   model.FlyByWire_U.in.data.longitude_deg = simData.longitude_deg;
   model.FlyByWire_U.in.data.engine_1_thrust_lbf = simData.engine_1_thrust_lbf;
   model.FlyByWire_U.in.data.engine_2_thrust_lbf = simData.engine_2_thrust_lbf;
+  model.FlyByWire_U.in.data.thrust_lever_1_pos = simData.throttle_lever_1_pos;
+  model.FlyByWire_U.in.data.thrust_lever_2_pos = simData.throttle_lever_2_pos;
 
   // process the sidestick handling
   // use the values read from input as sidestick left
