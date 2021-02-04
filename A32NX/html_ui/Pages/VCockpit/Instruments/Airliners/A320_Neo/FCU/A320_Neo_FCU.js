@@ -745,10 +745,10 @@ class A320_Neo_FCU_VerticalSpeed extends A320_Neo_FCU_Component {
             this.selectedVs = Utils.Clamp(Math.round(this.selectedVs - 100), -this.ABS_MINMAX_VS, this.ABS_MINMAX_VS);
             this.onRotate();
         } else if (_event === "INC_FPA") {
-            this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa + 0.1) * 10) / 10, -this.ABS_MINMAX_VS, this.ABS_MINMAX_VS);
+            this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa + 0.1) * 10) / 10, -this.ABS_MINMAX_FPA, this.ABS_MINMAX_FPA);
             this.onRotate();
         } else if (_event === "DEC_FPA") {
-            this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa - 0.1) * 10) / 10, -this.ABS_MINMAX_VS, this.ABS_MINMAX_VS);
+            this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa - 0.1) * 10) / 10, -this.ABS_MINMAX_FPA, this.ABS_MINMAX_FPA);
             this.onRotate();
         } else if (_event === "VS_PUSH") {
             this.onPush();
