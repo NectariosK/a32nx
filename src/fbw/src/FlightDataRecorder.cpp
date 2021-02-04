@@ -61,7 +61,9 @@ void FlightDataRecorder::initialize() {
        << maximumSampleCounter << endl;
 }
 
-void FlightDataRecorder::update(FlyByWireModelClass* model) {
+void FlightDataRecorder::update(AutopilotStateMachineModelClass* autopilotStateMachine,
+                                AutopilotLawsModelClass* autopilotLaws,
+                                FlyByWireModelClass* flyByWire) {
   // check if enabled
   if (!isEnabled) {
     return;
@@ -71,7 +73,11 @@ void FlightDataRecorder::update(FlyByWireModelClass* model) {
   manageFlightDataRecorderFiles();
 
   // write data to file
-  fileStream->write(reinterpret_cast<char*>(&model->FlyByWire_Y.out), sizeof(model->FlyByWire_Y.out));
+  fileStream->write(reinterpret_cast<char*>(&autopilotStateMachine->AutopilotStateMachine_Y.out),
+                    sizeof(autopilotStateMachine->AutopilotStateMachine_Y.out));
+  fileStream->write(reinterpret_cast<char*>(&autopilotLaws->AutopilotLaws_Y.out.output),
+                    sizeof(autopilotLaws->AutopilotLaws_Y.out.output));
+  fileStream->write(reinterpret_cast<char*>(&flyByWire->FlyByWire_Y.out), sizeof(flyByWire->FlyByWire_Y.out));
 }
 
 void FlightDataRecorder::terminate() {

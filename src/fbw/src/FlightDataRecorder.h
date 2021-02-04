@@ -20,6 +20,8 @@
 
 #include <fstream>
 
+#include "AutopilotLaws.h"
+#include "AutopilotStateMachine.h"
 #include "FlyByWire.h"
 #include "zfstream.h"
 
@@ -27,7 +29,9 @@ class FlightDataRecorder {
  public:
   void initialize();
 
-  void update(FlyByWireModelClass* model);
+  void update(AutopilotStateMachineModelClass* autopilotStateMachine,
+              AutopilotLawsModelClass* autopilotLaws,
+              FlyByWireModelClass* flyByWire);
 
   void terminate();
 

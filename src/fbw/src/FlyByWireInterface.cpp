@@ -147,7 +147,7 @@ bool FlyByWireInterface::update(double sampleTime) {
   }
 
   // update flight data recorder
-  flightDataRecorder.update(&flyByWire);
+  flightDataRecorder.update(&autopilotStateMachine, &autopilotLaws, &flyByWire);
 
   // return result
   return result;

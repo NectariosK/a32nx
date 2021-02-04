@@ -3,12 +3,14 @@
 
 #include "CommandLine.hpp"
 #include "FlightDataRecorderConverter.h"
+#include "AutopilotLaws_types.h"
+#include "AutopilotStateMachine_types.h"
 #include "FlyByWire_types.h"
 #include "zfstream.h"
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   // variables for command line parameters
   string inFilePath;
   string outFilePath;
@@ -29,7 +31,7 @@ int main(int argc, char* argv[]) {
   // parse command line
   try {
     args.parse(argc, argv);
-  } catch (runtime_error const& e) {
+  } catch (runtime_error const &e) {
     cout << e.what() << endl;
     return -1;
   }
@@ -79,7 +81,7 @@ int main(int argc, char* argv[]) {
   FlightDataRecorderConverter::writeHeader(out, delimiter);
 
   // create input stream
-  istream* in;
+  istream *in;
   if (!noCompression) {
     in = new gzifstream(inFilePath.c_str());
   } else {
@@ -97,14 +99,18 @@ int main(int argc, char* argv[]) {
   auto numberOfEntries = filesystem::file_size(inFilePath) / sizeof(fbw_output);
 
   // struct for reading
-  fbw_output data = {};
+  ap_sm_output data_ap_sm = {};
+  ap_raw_output data_ap_laws = {};
+  fbw_output data_fbw = {};
 
   // read one struct from the file
   while (!in->eof()) {
-    // read data into struct
-    in->read(reinterpret_cast<char*>(&data), sizeof(fbw_output));
+    // read data into structs
+    in->read(reinterpret_cast<char *>(&data_ap_sm), sizeof(ap_sm_output));
+    in->read(reinterpret_cast<char *>(&data_ap_laws), sizeof(ap_raw_output));
+    in->read(reinterpret_cast<char *>(&data_fbw), sizeof(fbw_output));
     // write struct to csv file
-    FlightDataRecorderConverter::writeStruct(out, delimiter, data);
+    FlightDataRecorderConverter::writeStruct(out, delimiter, data_ap_sm, data_ap_laws, data_fbw);
     // print progress
     if (++counter % 500 == 0) {
       cout << "Processed " << counter << " entries...";
