@@ -342,6 +342,7 @@ typedef struct {
   boolean_T FLARE;
   boolean_T ROLL_OUT;
   boolean_T SRS;
+  boolean_T SRS_GA;
   boolean_T THR_RED;
   boolean_T H_fcu_active;
 } ap_vertical_condition;
