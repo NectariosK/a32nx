@@ -53,6 +53,7 @@ class FlyByWireInterface {
 
   double previousSimulationTime = 0;
 
+  bool customFlightGuidanceEnabled = false;
   bool autopilotStateMachineEnabled = false;
   bool autopilotLawsEnabled = false;
   bool flyByWireEnabled = false;

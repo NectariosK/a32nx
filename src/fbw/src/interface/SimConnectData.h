@@ -94,6 +94,9 @@ struct SimData {
   unsigned long long isAutoThrottleActive;
   double engine_n1_1;
   double engine_n1_2;
+  unsigned long long gpsIsFlightPlanActive;
+  double gpsWpCrossTrack;
+  double gpsWpTrackAngleError;
 };
 
 struct SimInput {
