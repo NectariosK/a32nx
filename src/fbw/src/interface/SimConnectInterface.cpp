@@ -688,54 +688,70 @@ void SimConnectInterface::simConnectProcessEvent(const SIMCONNECT_RECV_EVENT* ev
 
     case Events::AUTOPILOT_OFF: {
       simInputAutopilot.AP_disconnect = 1;
+      cout << "WASM: event triggered: AUTOPILOT_OFF" << endl;
       break;
     }
 
-    case Events::AP_MASTER:
+    case Events::AP_MASTER: {
+      simInputAutopilot.AP_1_push = 1;
+      cout << "WASM: event triggered: AP_MASTER" << endl;
+      break;
+    }
+
     case Events::A32NX_FCU_AP_1_PUSH: {
       simInputAutopilot.AP_1_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_AP_1_PUSH" << endl;
       break;
     }
 
     case Events::A32NX_FCU_AP_2_PUSH: {
       simInputAutopilot.AP_2_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_AP_2_PUSH" << endl;
       break;
     }
 
     case Events::A32NX_FCU_HDG_PUSH: {
       simInputAutopilot.HDG_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_HDG_PUSH" << endl;
       break;
     }
     case Events::A32NX_FCU_HDG_PULL: {
       simInputAutopilot.HDG_pull = 1;
+      cout << "WASM: event triggered: A32NX_FCU_HDG_PULL" << endl;
       break;
     }
 
     case Events::A32NX_FCU_ALT_PUSH: {
       simInputAutopilot.ALT_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_ALT_PUSH" << endl;
       break;
     }
     case Events::A32NX_FCU_ALT_PULL: {
       simInputAutopilot.ALT_pull = 1;
+      cout << "WASM: event triggered: A32NX_FCU_ALT_PULL" << endl;
       break;
     }
 
     case Events::A32NX_FCU_VS_PUSH: {
       simInputAutopilot.VS_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_VS_PUSH" << endl;
       break;
     }
     case Events::A32NX_FCU_VS_PULL: {
       simInputAutopilot.VS_pull = 1;
+      cout << "WASM: event triggered: A32NX_FCU_VS_PULL" << endl;
       break;
     }
 
     case Events::A32NX_FCU_LOC_PUSH: {
       simInputAutopilot.LOC_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_LOC_PUSH" << endl;
       break;
     }
 
     case Events::A32NX_FCU_APPR_PUSH: {
       simInputAutopilot.APPR_push = 1;
+      cout << "WASM: event triggered: A32NX_FCU_APPR_PUSH" << endl;
       break;
     }
 
