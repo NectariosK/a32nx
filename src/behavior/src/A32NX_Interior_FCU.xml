@@ -139,12 +139,10 @@
                 </CLOCKWISE_CODE>
 
                 <PULL_CODE>
-                    (&gt;K:A32NX.FCU_ALT_PULL)
-                    (&gt;H:A320_Neo_CDU_MODE_SELECTED_ALTITUDE)
+                    (&gt;H:A320_Neo_FCU_ALT_PULL)
                 </PULL_CODE>
                 <PUSH_CODE>
-                    (&gt;K:A32NX.FCU_ALT_PUSH)
-                    (&gt;H:A320_Neo_CDU_MODE_MANAGED_ALTITUDE)
+                    (&gt;H:A320_Neo_FCU_ALT_PUSH)
                 </PUSH_CODE> <!-- TODO - Change - Should be managed climb/descent (comment from Asobo) -->
 
                 <CENTER_RADIUS>0</CENTER_RADIUS>
@@ -219,23 +217,23 @@
             <UseTemplate Name="ASOBO_GT_Knob_Infinite_PushPull">
                 <CLOCKWISE_CODE>
                     (L:A32NX_TRK_FPA_MODE_ACTIVE, bool) 1 == if{
-                        (&gt;H:A320_Neo_FCU_INC_TRACK)
+                        (&gt;H:A320_Neo_FCU_HDG_INC_TRACK)
                     } els{
-                        (&gt;H:A320_Neo_FCU_INC_HEADING)
+                        (&gt;H:A320_Neo_FCU_HDG_INC_HEADING)
                     }
                 </CLOCKWISE_CODE>
                 <ANTICLOCKWISE_CODE>
                     (L:A32NX_TRK_FPA_MODE_ACTIVE, bool) 1 == if{
-                        (&gt;H:A320_Neo_FCU_DEC_TRACK)
+                        (&gt;H:A320_Neo_FCU_HDG_DEC_TRACK)
                     } els{
-                        (&gt;H:A320_Neo_FCU_DEC_HEADING)
+                        (&gt;H:A320_Neo_FCU_HDG_DEC_HEADING)
                     }
                 </ANTICLOCKWISE_CODE>
                 <PULL_CODE>
-                    (&gt;H:A320_Neo_FCU_HEADING_PULL)
+                    (&gt;H:A320_Neo_FCU_HDG_PULL)
                 </PULL_CODE>
                 <PUSH_CODE>
-                    (&gt;H:A320_Neo_FCU_HEADING_PUSH)
+                    (&gt;H:A320_Neo_FCU_HDG_PUSH)
                 </PUSH_CODE>
                 <CENTER_RADIUS>0</CENTER_RADIUS>
                 <WWISE_EVENT_1>QNHknob</WWISE_EVENT_1>
@@ -284,24 +282,22 @@
             <UseTemplate Name="ASOBO_GT_Knob_Infinite_PushPull">
                 <CLOCKWISE_CODE>
                     (L:A32NX_TRK_FPA_MODE_ACTIVE, bool) 1 == if{
-                        (&gt;H:A320_Neo_FCU_INC_FPA)
+                        (&gt;H:A320_Neo_FCU_VS_INC_FPA)
                     } els{
-                        (&gt;H:A320_Neo_FCU_INC_VS)
+                        (&gt;H:A320_Neo_FCU_VS_INC_VS)
                     }
                 </CLOCKWISE_CODE>
                 <ANTICLOCKWISE_CODE>
                     (L:A32NX_TRK_FPA_MODE_ACTIVE, bool) 1 == if{
-                        (&gt;H:A320_Neo_FCU_DEC_FPA)
+                        (&gt;H:A320_Neo_FCU_VS_DEC_FPA)
                     } els{
-                        (&gt;H:A320_Neo_FCU_DEC_VS)
+                        (&gt;H:A320_Neo_FCU_VS_DEC_VS)
                     }
                 </ANTICLOCKWISE_CODE>
                 <PULL_CODE>
-                    (&gt;K:A32NX.FCU_VS_PULL)
                     (&gt;H:A320_Neo_FCU_VS_PULL)
                 </PULL_CODE>
                 <PUSH_CODE>
-                    (&gt;K:A32NX.FCU_VS_PUSH)
                     (&gt;H:A320_Neo_FCU_VS_PUSH)
                 </PUSH_CODE>
                 <CENTER_RADIUS>0</CENTER_RADIUS>

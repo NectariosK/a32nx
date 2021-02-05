@@ -33,7 +33,7 @@
             </True>
         </Condition>
         <UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
-            <LEFT_SINGLE_CODE>(&gt;K:A32NX.FCU_AP_#ID#_PUSH)</LEFT_SINGLE_CODE>
+            <LEFT_SINGLE_CODE>(&gt;H:A320_Neo_FCU_AP_#ID#_PUSH)</LEFT_SINGLE_CODE>
             <EMISSIVE_CODE_ACTIVE>(L:A32NX_AUTOPILOT_#ID#_ACTIVE, Bool)</EMISSIVE_CODE_ACTIVE>
         </UseTemplate>
     </Template>
@@ -51,7 +51,7 @@
         </DefaultTemplateParameters>
 
         <UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
-            <LEFT_SINGLE_CODE>(&gt;K:A32NX.FCU_LOC_PUSH)</LEFT_SINGLE_CODE>
+            <LEFT_SINGLE_CODE>(&gt;H:A320_Neo_FCU_LOC_PUSH)</LEFT_SINGLE_CODE>
             <EMISSIVE_CODE_ACTIVE>(L:A32NX_FCU_LOC_MODE_ACTIVE, bool)</EMISSIVE_CODE_ACTIVE>
         </UseTemplate>
     </Template>
@@ -69,7 +69,7 @@
         </DefaultTemplateParameters>
 
         <UseTemplate Name="ASOBO_AUTOPILOT_Push_Template">
-            <LEFT_SINGLE_CODE>(&gt;K:A32NX.FCU_APPR_PUSH)</LEFT_SINGLE_CODE>
+            <LEFT_SINGLE_CODE>(&gt;H:A320_Neo_FCU_APPR_PUSH)</LEFT_SINGLE_CODE>
             <EMISSIVE_CODE_ACTIVE>(L:A32NX_FCU_APPR_MODE_ACTIVE, bool)</EMISSIVE_CODE_ACTIVE>
         </UseTemplate>
     </Template>

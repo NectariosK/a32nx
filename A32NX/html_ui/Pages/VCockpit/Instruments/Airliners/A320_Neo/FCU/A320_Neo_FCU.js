@@ -193,6 +193,30 @@ class A320_Neo_FCU_Speed extends A320_Neo_FCU_Component {
     }
 }
 
+class A320_Neo_FCU_Autopilot extends A320_Neo_FCU_Component {
+    constructor() {
+        super(...arguments);
+    }
+
+    init() {
+    }
+
+    onEvent(_event) {
+        if (_event === "AP_1_PUSH") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_AP_1_PUSH", "number", 0);
+        } else if (_event === "AP_2_PUSH") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_AP_2_PUSH", "number", 0);
+        } else if (_event === "LOC_PUSH") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_LOC_PUSH", "number", 0);
+        } else if (_event === "APPR_PUSH") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_APPR_PUSH", "number", 0);
+        }
+    }
+
+    update(_deltaTime) {
+    }
+}
+
 class A320_Neo_FCU_Heading extends A320_Neo_FCU_Component {
     constructor() {
         super(...arguments);
@@ -436,21 +460,21 @@ class A320_Neo_FCU_Heading extends A320_Neo_FCU_Component {
     }
 
     onEvent(_event) {
-        if (_event === "INC_HEADING") {
+        if (_event === "HDG_INC_HEADING") {
             this.selectedValue = (((this.selectedValue + 1) % 360) + 360) % 360;
             this.onRotate();
-        } else if (_event === "DEC_HEADING") {
+        } else if (_event === "HDG_DEC_HEADING") {
             this.selectedValue = (((this.selectedValue - 1) % 360) + 360) % 360;
             this.onRotate();
-        } else if (_event === "INC_TRACK") {
+        } else if (_event === "HDG_INC_TRACK") {
             this.selectedValue = (((this.selectedValue + 1) % 360) + 360) % 360;
             this.onRotate();
-        } else if (_event === "DEC_TRACK") {
+        } else if (_event === "HDG_DEC_TRACK") {
             this.selectedValue = (((this.selectedValue - 1) % 360) + 360) % 360;
             this.onRotate();
-        } else if (_event === "HEADING_PUSH") {
+        } else if (_event === "HDG_PUSH") {
             this.onPush();
-        } else if (_event === "HEADING_PULL") {
+        } else if (_event === "HDG_PULL") {
             this.onPull();
         }
     }
@@ -538,6 +562,13 @@ class A320_Neo_FCU_Altitude extends A320_Neo_FCU_Component {
             this.setElementVisibility(this.illuminator, this.isManaged);
         }
     }
+    onEvent(_event) {
+        if (_event === "ALT_PUSH") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_ALT_PUSH", "number", 0);
+        } else if (_event === "ALT_PULL") {
+            SimVar.SetSimVarValue("K:A32NX.FCU_ALT_PULL", "number", 0);
+        }
+    }
 }
 
 var A320_Neo_FCU_VSpeed_State;
@@ -586,6 +617,8 @@ class A320_Neo_FCU_VerticalSpeed extends A320_Neo_FCU_Component {
 
         clearTimeout(this._resetSelectionTimeout);
         this.forceUpdate = true;
+
+        SimVar.SetSimVarValue("K:A32NX.FCU_VS_PUSH", "number", 0);
     }
 
     onRotate() {
@@ -622,6 +655,8 @@ class A320_Neo_FCU_VerticalSpeed extends A320_Neo_FCU_Component {
 
         clearTimeout(this._resetSelectionTimeout);
         this.forceUpdate = true;
+
+        SimVar.SetSimVarValue("K:A32NX.FCU_VS_PULL", "number", 0);
     }
 
     getCurrentFlightPathAngle() {
@@ -738,16 +773,16 @@ class A320_Neo_FCU_VerticalSpeed extends A320_Neo_FCU_Component {
     }
 
     onEvent(_event) {
-        if (_event === "INC_VS") {
+        if (_event === "VS_INC_VS") {
             this.selectedVs = Utils.Clamp(Math.round(this.selectedVs + 100), -this.ABS_MINMAX_VS, this.ABS_MINMAX_VS);
             this.onRotate();
-        } else if (_event === "DEC_VS") {
+        } else if (_event === "VS_DEC_VS") {
             this.selectedVs = Utils.Clamp(Math.round(this.selectedVs - 100), -this.ABS_MINMAX_VS, this.ABS_MINMAX_VS);
             this.onRotate();
-        } else if (_event === "INC_FPA") {
+        } else if (_event === "VS_INC_FPA") {
             this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa + 0.1) * 10) / 10, -this.ABS_MINMAX_FPA, this.ABS_MINMAX_FPA);
             this.onRotate();
-        } else if (_event === "DEC_FPA") {
+        } else if (_event === "VS_DEC_FPA") {
             this.selectedFpa = Utils.Clamp(Math.round((this.selectedFpa - 0.1) * 10) / 10, -this.ABS_MINMAX_FPA, this.ABS_MINMAX_FPA);
             this.onRotate();
         } else if (_event === "VS_PUSH") {
@@ -803,9 +838,11 @@ class A320_Neo_FCU_LargeScreen extends NavSystemElement {
             this.headingDisplay = new A320_Neo_FCU_Heading(this.gps, "Heading");
             this.components.push(this.headingDisplay);
             this.components.push(new A320_Neo_FCU_Mode(this.gps, "Mode"));
-            this.components.push(new A320_Neo_FCU_Altitude(this.gps, "Altitude"));
+            this.altitudeDisplay = new A320_Neo_FCU_Altitude(this.gps, "Altitude");
+            this.components.push(this.altitudeDisplay);
             this.verticalSpeedDisplay = new A320_Neo_FCU_VerticalSpeed(this.gps, "VerticalSpeed");
             this.components.push(this.verticalSpeedDisplay);
+            this.autopilotInterface = new A320_Neo_FCU_Autopilot(this.gps, "Autopilot");
         }
     }
     onEnter() {
@@ -840,7 +877,9 @@ class A320_Neo_FCU_LargeScreen extends NavSystemElement {
     onExit() {
     }
     onEvent(_event) {
+        this.autopilotInterface.onEvent(_event);
         this.headingDisplay.onEvent(_event);
+        this.altitudeDisplay.onEvent(_event);
         this.verticalSpeedDisplay.onEvent(_event);
     }
 }
