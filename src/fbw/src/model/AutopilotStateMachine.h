@@ -116,7 +116,7 @@ struct Parameters_AutopilotStateMachine_T_ {
   real_T Constant_Value_j;
   real_T Delay_InitialCondition_m;
   boolean_T Out1_Y0;
-  boolean_T Delay_InitialCondition_ij;
+  boolean_T Delay_InitialCondition_e;
 };
 
 extern const ap_sm_input AutopilotStateMachine_rtZap_sm_input;
@@ -148,6 +148,7 @@ class AutopilotStateMachineModelClass {
   void AutopilotStateMachine_OFF_entry(void);
   void AutopilotStateMachine_ROLL_OUT_entry(void);
   void AutopilotStateMachine_FLARE_entry(void);
+  boolean_T AutopilotStateMachine_LOC_TO_X(const ap_sm_output *BusAssignment);
   void AutopilotStateMachine_LOC_TRACK_entry(void);
   void AutopilotStateMachine_LAND_entry(void);
   boolean_T AutopilotStateMachine_NAV_TO_HDG(const ap_sm_output *BusAssignment);
@@ -184,6 +185,7 @@ class AutopilotStateMachineModelClass {
   void AutopilotStateMachine_DES(void);
   void AutopilotStateMachine_OFF_entry_p(void);
   void AutopilotStateMachine_ROLL_OUT_entry_o(void);
+  boolean_T AutopilotStateMachine_GS_TO_X(void);
   void AutopilotStateMachine_GS_TRACK_entry(void);
   void AutopilotStateMachine_LAND_entry_i(void);
   void AutopilotStateMachine_FLARE_entry_g(void);

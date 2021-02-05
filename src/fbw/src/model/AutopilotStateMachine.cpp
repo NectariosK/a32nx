@@ -363,6 +363,14 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_FLARE_entry(void)
   AutopilotStateMachine_B.out_g.law = lateral_law_LOC_TRACK;
 }
 
+boolean_T AutopilotStateMachineModelClass::AutopilotStateMachine_LOC_TO_X(const ap_sm_output *BusAssignment)
+{
+  boolean_T isGsArmedOrActive;
+  isGsArmedOrActive = (BusAssignment->vertical_previous.armed.GS || (BusAssignment->vertical_previous.output.mode ==
+    vertical_mode_GS_CPT) || (BusAssignment->vertical_previous.output.mode == vertical_mode_GS_TRACK));
+  return (BusAssignment->input.LOC_push && (!isGsArmedOrActive)) || (BusAssignment->input.APPR_push && isGsArmedOrActive);
+}
+
 void AutopilotStateMachineModelClass::AutopilotStateMachine_LOC_TRACK_entry(void)
 {
   AutopilotStateMachine_B.out_g.mode = lateral_mode_LOC_TRACK;
@@ -467,7 +475,7 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_ON(const ap_sm_outpu
           break;
 
          case AutopilotStateMachine_IN_LOC_CPT:
-          if (BusAssignment->input.LOC_push || BusAssignment->input.APPR_push) {
+          if (AutopilotStateMachine_LOC_TO_X(BusAssignment)) {
             if (BusAssignment->data.on_ground == 0.0) {
               AutopilotStateMachine_DWork.is_LOC = AutopilotStateMachine_IN_NO_ACTIVE_CHILD;
               AutopilotStateMachine_DWork.is_ON_c = AutopilotStateMachine_IN_HDG;
@@ -490,7 +498,7 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_ON(const ap_sm_outpu
             AutopilotStateMachine_DWork.is_LOC = AutopilotStateMachine_IN_LAND;
             AutopilotStateMachine_LAND_entry();
           } else {
-            if (BusAssignment->input.LOC_push || BusAssignment->input.APPR_push) {
+            if (AutopilotStateMachine_LOC_TO_X(BusAssignment)) {
               if (BusAssignment->data.on_ground == 0.0) {
                 AutopilotStateMachine_DWork.is_LOC = AutopilotStateMachine_IN_NO_ACTIVE_CHILD;
                 AutopilotStateMachine_DWork.is_ON_c = AutopilotStateMachine_IN_HDG;
@@ -1263,6 +1271,12 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_ROLL_OUT_entry_o(voi
   AutopilotStateMachine_B.out.law = vertical_law_FLARE;
 }
 
+boolean_T AutopilotStateMachineModelClass::AutopilotStateMachine_GS_TO_X(void)
+{
+  return AutopilotStateMachine_B.BusAssignment_g.input.LOC_push ||
+    AutopilotStateMachine_B.BusAssignment_g.input.APPR_push;
+}
+
 void AutopilotStateMachineModelClass::AutopilotStateMachine_GS_TRACK_entry(void)
 {
   AutopilotStateMachine_B.out.mode = vertical_mode_GS_TRACK;
@@ -1297,8 +1311,7 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_GS(void)
     break;
 
    case AutopilotStateMachine_IN_GS_CPT:
-    if (AutopilotStateMachine_B.BusAssignment_g.input.LOC_push ||
-        AutopilotStateMachine_B.BusAssignment_g.input.APPR_push) {
+    if (AutopilotStateMachine_GS_TO_X()) {
       if (AutopilotStateMachine_B.BusAssignment_g.data.on_ground == 0.0) {
         AutopilotStateMachine_DWork.is_GS = AutopilotStateMachine_IN_NO_ACTIVE_CHILD;
         AutopilotStateMachine_DWork.is_ON = AutopilotStateMachine_IN_VS;
@@ -1321,8 +1334,7 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_GS(void)
       AutopilotStateMachine_DWork.is_GS = AutopilotStateMachine_IN_LAND_k;
       AutopilotStateMachine_LAND_entry_i();
     } else {
-      if (AutopilotStateMachine_B.BusAssignment_g.input.LOC_push ||
-          AutopilotStateMachine_B.BusAssignment_g.input.APPR_push) {
+      if (AutopilotStateMachine_GS_TO_X()) {
         if (AutopilotStateMachine_B.BusAssignment_g.data.on_ground == 0.0) {
           AutopilotStateMachine_DWork.is_GS = AutopilotStateMachine_IN_NO_ACTIVE_CHILD;
           AutopilotStateMachine_DWork.is_ON = AutopilotStateMachine_IN_VS;
@@ -2631,7 +2643,7 @@ void AutopilotStateMachineModelClass::initialize()
     for (i = 0; i < 100; i++) {
       AutopilotStateMachine_DWork.Delay_DSTATE_d[i] = AutopilotStateMachine_P.Delay_InitialCondition_i;
       AutopilotStateMachine_DWork.Delay_DSTATE_c[i] = AutopilotStateMachine_P.Delay_InitialCondition_m;
-      AutopilotStateMachine_DWork.Delay_DSTATE_h[i] = AutopilotStateMachine_P.Delay_InitialCondition_ij;
+      AutopilotStateMachine_DWork.Delay_DSTATE_h[i] = AutopilotStateMachine_P.Delay_InitialCondition_e;
     }
 
     AutopilotStateMachine_DWork.is_active_c5_AutopilotStateMachine = 0U;
