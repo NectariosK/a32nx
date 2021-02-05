@@ -26,66 +26,8 @@
 using namespace std;
 
 bool FlyByWireInterface::connect() {
-  // register L variables for the sidestick
-  idSideStickPositionX = register_named_variable("A32NX_SIDESTICK_POSITION_X");
-  idSideStickPositionY = register_named_variable("A32NX_SIDESTICK_POSITION_Y");
-  // register L variables for the sidestick on the left side
-  idSideStickLeftPositionX = register_named_variable("A32NX_SIDESTICK_LEFT_POSITION_X");
-  idSideStickLeftPositionY = register_named_variable("A32NX_SIDESTICK_LEFT_POSITION_Y");
-  // register L variables for the sidestick on the right side
-  idSideStickRightPositionX = register_named_variable("A32NX_SIDESTICK_RIGHT_POSITION_X");
-  idSideStickRightPositionY = register_named_variable("A32NX_SIDESTICK_RIGHT_POSITION_Y");
-  // register L variables for the rudder handling
-  idRudderPositionOverrideOn = register_named_variable("A32NX_RUDDER_POSITION_OVERRIDE_ON");
-  idRudderPosition = register_named_variable("A32NX_RUDDER_POSITION");
-  // register L variables for the throttle handling
-  idThrottlePositionOverrideOn = register_named_variable("A32NX_THROTTLE_POSITION_OVERRIDE_ON");
-  idThrottlePosition_1 = register_named_variable("A32NX_THROTTLE_POSITION_1");
-  idThrottlePosition_2 = register_named_variable("A32NX_THROTTLE_POSITION_2");
-
-  // register L variable for custom fly-by-wire interface
-  idFmaLateralMode = register_named_variable("A32NX_FMA_LATERAL_MODE");
-  idFmaLateralArmed = register_named_variable("A32NX_FMA_LATERAL_ARMED");
-  idFmaVerticalMode = register_named_variable("A32NX_FMA_VERTICAL_MODE");
-  idFmaVerticalArmed = register_named_variable("A32NX_FMA_VERTICAL_ARMED");
-
-  // register L variable for flight director
-  idFlightDirectorBank = register_named_variable("A32NX_FLIGHT_DIRECTOR_BANK");
-  idFlightDirectorPitch = register_named_variable("A32NX_FLIGHT_DIRECTOR_PITCH");
-  idFlightDirectorYaw = register_named_variable("A32NX_FLIGHT_DIRECTOR_YAW");
-
-  // register L variables for autopilot
-  idAutopilotActiveAny = register_named_variable("A32NX_AUTOPILOT_ACTIVE");
-  idAutopilotActive_1 = register_named_variable("A32NX_AUTOPILOT_1_ACTIVE");
-  idAutopilotActive_2 = register_named_variable("A32NX_AUTOPILOT_2_ACTIVE");
-
-  idAutothrustMode = register_named_variable("A32NX_AUTOPILOT_AUTOTHRUST_MODE");
-
-  // register L variables for flight guidance
-  idFlightPhase = register_named_variable("A32NX_FWC_FLIGHT_PHASE");
-  idFmgcV2 = register_named_variable("AIRLINER_V2_SPEED");
-  idFmgcV_APP = register_named_variable("AIRLINER_VAPP_SPEED");
-  idFmgcV_LS = register_named_variable("AIRLINER_VLS_SPEED");
-
-  // idFmgcFlightPlanAvailable = register_named_variable("X");
-  idFmgcAltitudeConstraint = register_named_variable("A32NX_AP_CSTN_ALT");
-  idFmgcThrustReductionAltitude = register_named_variable("AIRLINER_THR_RED_ALT");
-  idFmgcThrustReductionAltitudeGoAround = register_named_variable("AIRLINER_THR_RED_ALT_GOAROUND");
-  idFmgcAccelerationAltitude = register_named_variable("AIRLINER_ACC_ALT");
-  idFmgcAccelerationAltitudeEngineOut = register_named_variable("AIRLINER_ACC_ALT_ENGINEOUT");
-  idFmgcAccelerationAltitudeGoAround = register_named_variable("AIRLINER_ACC_ALT_GOAROUND");
-
-  idFlightGuidanceCrossTrackError = register_named_variable("A32NX_FG_CROSS_TRACK_ERROR");
-  idFlightGuidanceTrackAngleError = register_named_variable("A32NX_FG_TRACK_ANGLE_ERROR");
-
-  idFcuTrkFpaModeActive = register_named_variable("A32NX_TRK_FPA_MODE_ACTIVE");
-  idFcuSelectedFpa = register_named_variable("A32NX_AUTOPILOT_FPA_SELECTED");
-  idFcuSelectedVs = register_named_variable("A32NX_AUTOPILOT_VS_SELECTED");
-  idFcuSelectedHeading = register_named_variable("A32NX_AUTOPILOT_HEADING_SELECTED");
-
-  idFcuLocModeActive = register_named_variable("A32NX_FCU_LOC_MODE_ACTIVE");
-  idFcuApprModeActive = register_named_variable("A32NX_FCU_APPR_MODE_ACTIVE");
-  idFcuModeReversionActive = register_named_variable("A32NX_FCU_MODE_REVERSION_ACTIVE");
+  // setup local variables
+  setupLocalVariables();
 
   // set rate for throttle override
   rateLimiterEngine_1.setRate(3);
@@ -103,15 +45,7 @@ bool FlyByWireInterface::connect() {
   flightDataRecorder.initialize();
 
   // read config for models
-  INIReader configuration(MODEL_CONFIGURATION_FILEPATH);
-  autopilotStateMachineEnabled = configuration.GetBoolean("Model", "AutopilotStateMachineEnabled", true);
-  autopilotLawsEnabled = configuration.GetBoolean("Model", "AutopilotLawsEnabled", true);
-  flyByWireEnabled = configuration.GetBoolean("Model", "FlyByWireEnabled", true);
-  customFlightGuidanceEnabled = configuration.GetBoolean("Autopilot", "CustomFlightGuidanceEnabled", false);
-  std::cout << "WASM: Model Configuration : AutopilotStateMachineEnabled = " << autopilotStateMachineEnabled << endl;
-  std::cout << "WASM: Model Configuration : AutopilotLawsEnabled         = " << autopilotLawsEnabled << endl;
-  std::cout << "WASM: Model Configuration : FlyByWireEnabled             = " << flyByWireEnabled << endl;
-  std::cout << "WASM: Autopilot Configuration : CustomFlightGuidanceEnabled = " << customFlightGuidanceEnabled << endl;
+  loadConfiguration();
 
   // connect to sim connect
   return simConnectInterface.connect(isThrottleHandlingEnabled, idleThrottleInput, useReverseOnAxis,
@@ -485,9 +419,20 @@ bool FlyByWireInterface::updateAutopilotLaws(double sampleTime) {
   }
 
   // update flight director -------------------------------------------------------------------------------------------
-  set_named_variable_value(idFlightDirectorPitch, -1.0 * autopilotLawsOutput.flight_director.Theta_c_deg);
-  set_named_variable_value(idFlightDirectorBank, -1.0 * autopilotLawsOutput.flight_director.Phi_c_deg);
-  set_named_variable_value(idFlightDirectorYaw, autopilotLawsOutput.flight_director.Beta_c_deg);
+  double fdPitch = -1.0 * autopilotLawsOutput.flight_director.Theta_c_deg;
+  double fdBank = -1.0 * autopilotLawsOutput.flight_director.Phi_c_deg;
+  double fdYaw = autopilotLawsOutput.flight_director.Beta_c_deg;
+  if (flightDirectorSmoothingEnabled) {
+    fdPitch = smoothFlightDirector(sampleTime, flightDirectorSmoothingFactor, flightDirectorSmoothingLimit,
+                                   get_named_variable_value(idFlightDirectorPitch), fdPitch);
+    fdBank = smoothFlightDirector(sampleTime, flightDirectorSmoothingFactor, flightDirectorSmoothingLimit,
+                                  get_named_variable_value(idFlightDirectorBank), fdBank);
+    fdYaw = smoothFlightDirector(sampleTime, flightDirectorSmoothingFactor, flightDirectorSmoothingLimit,
+                                 get_named_variable_value(idFlightDirectorYaw), fdYaw);
+  }
+  set_named_variable_value(idFlightDirectorPitch, fdPitch);
+  set_named_variable_value(idFlightDirectorBank, fdBank);
+  set_named_variable_value(idFlightDirectorYaw, fdYaw);
 
   // return result ----------------------------------------------------------------------------------------------------
   return true;
@@ -653,6 +598,90 @@ bool FlyByWireInterface::updateFlyByWire(double sampleTime) {
 
   // success ----------------------------------------------------------------------------------------------------------
   return true;
+}
+
+void FlyByWireInterface::setupLocalVariables() {
+  // register L variables for the sidestick
+  idSideStickPositionX = register_named_variable("A32NX_SIDESTICK_POSITION_X");
+  idSideStickPositionY = register_named_variable("A32NX_SIDESTICK_POSITION_Y");
+  // register L variables for the sidestick on the left side
+  idSideStickLeftPositionX = register_named_variable("A32NX_SIDESTICK_LEFT_POSITION_X");
+  idSideStickLeftPositionY = register_named_variable("A32NX_SIDESTICK_LEFT_POSITION_Y");
+  // register L variables for the sidestick on the right side
+  idSideStickRightPositionX = register_named_variable("A32NX_SIDESTICK_RIGHT_POSITION_X");
+  idSideStickRightPositionY = register_named_variable("A32NX_SIDESTICK_RIGHT_POSITION_Y");
+  // register L variables for the rudder handling
+  idRudderPositionOverrideOn = register_named_variable("A32NX_RUDDER_POSITION_OVERRIDE_ON");
+  idRudderPosition = register_named_variable("A32NX_RUDDER_POSITION");
+  // register L variables for the throttle handling
+  idThrottlePositionOverrideOn = register_named_variable("A32NX_THROTTLE_POSITION_OVERRIDE_ON");
+  idThrottlePosition_1 = register_named_variable("A32NX_THROTTLE_POSITION_1");
+  idThrottlePosition_2 = register_named_variable("A32NX_THROTTLE_POSITION_2");
+
+  // register L variable for custom fly-by-wire interface
+  idFmaLateralMode = register_named_variable("A32NX_FMA_LATERAL_MODE");
+  idFmaLateralArmed = register_named_variable("A32NX_FMA_LATERAL_ARMED");
+  idFmaVerticalMode = register_named_variable("A32NX_FMA_VERTICAL_MODE");
+  idFmaVerticalArmed = register_named_variable("A32NX_FMA_VERTICAL_ARMED");
+
+  // register L variable for flight director
+  idFlightDirectorBank = register_named_variable("A32NX_FLIGHT_DIRECTOR_BANK");
+  idFlightDirectorPitch = register_named_variable("A32NX_FLIGHT_DIRECTOR_PITCH");
+  idFlightDirectorYaw = register_named_variable("A32NX_FLIGHT_DIRECTOR_YAW");
+
+  // register L variables for autopilot
+  idAutopilotActiveAny = register_named_variable("A32NX_AUTOPILOT_ACTIVE");
+  idAutopilotActive_1 = register_named_variable("A32NX_AUTOPILOT_1_ACTIVE");
+  idAutopilotActive_2 = register_named_variable("A32NX_AUTOPILOT_2_ACTIVE");
+
+  idAutothrustMode = register_named_variable("A32NX_AUTOPILOT_AUTOTHRUST_MODE");
+
+  // register L variables for flight guidance
+  idFlightPhase = register_named_variable("A32NX_FWC_FLIGHT_PHASE");
+  idFmgcV2 = register_named_variable("AIRLINER_V2_SPEED");
+  idFmgcV_APP = register_named_variable("AIRLINER_VAPP_SPEED");
+  idFmgcV_LS = register_named_variable("AIRLINER_VLS_SPEED");
+
+  // idFmgcFlightPlanAvailable = register_named_variable("X");
+  idFmgcAltitudeConstraint = register_named_variable("A32NX_AP_CSTN_ALT");
+  idFmgcThrustReductionAltitude = register_named_variable("AIRLINER_THR_RED_ALT");
+  idFmgcThrustReductionAltitudeGoAround = register_named_variable("AIRLINER_THR_RED_ALT_GOAROUND");
+  idFmgcAccelerationAltitude = register_named_variable("AIRLINER_ACC_ALT");
+  idFmgcAccelerationAltitudeEngineOut = register_named_variable("AIRLINER_ACC_ALT_ENGINEOUT");
+  idFmgcAccelerationAltitudeGoAround = register_named_variable("AIRLINER_ACC_ALT_GOAROUND");
+
+  idFlightGuidanceCrossTrackError = register_named_variable("A32NX_FG_CROSS_TRACK_ERROR");
+  idFlightGuidanceTrackAngleError = register_named_variable("A32NX_FG_TRACK_ANGLE_ERROR");
+
+  idFcuTrkFpaModeActive = register_named_variable("A32NX_TRK_FPA_MODE_ACTIVE");
+  idFcuSelectedFpa = register_named_variable("A32NX_AUTOPILOT_FPA_SELECTED");
+  idFcuSelectedVs = register_named_variable("A32NX_AUTOPILOT_VS_SELECTED");
+  idFcuSelectedHeading = register_named_variable("A32NX_AUTOPILOT_HEADING_SELECTED");
+
+  idFcuLocModeActive = register_named_variable("A32NX_FCU_LOC_MODE_ACTIVE");
+  idFcuApprModeActive = register_named_variable("A32NX_FCU_APPR_MODE_ACTIVE");
+  idFcuModeReversionActive = register_named_variable("A32NX_FCU_MODE_REVERSION_ACTIVE");
+}
+
+void FlyByWireInterface::loadConfiguration() {
+  INIReader configuration(MODEL_CONFIGURATION_FILEPATH);
+  autopilotStateMachineEnabled = configuration.GetBoolean("Model", "AutopilotStateMachineEnabled", true);
+  autopilotLawsEnabled = configuration.GetBoolean("Model", "AutopilotLawsEnabled", true);
+  flyByWireEnabled = configuration.GetBoolean("Model", "FlyByWireEnabled", true);
+  customFlightGuidanceEnabled = configuration.GetBoolean("Autopilot", "CustomFlightGuidanceEnabled", false);
+  flightDirectorSmoothingEnabled = configuration.GetBoolean("Autopilot", "FlightDirectorSmoothingEnabled", false);
+  flightDirectorSmoothingFactor = configuration.GetReal("Autopilot", "FlightDirectorSmoothingFactor", 2.5);
+  flightDirectorSmoothingLimit = configuration.GetReal("Autopilot", "FlightDirectorSmoothingLimit", 20);
+  std::cout << "WASM: Model Configuration : AutopilotStateMachineEnabled = " << autopilotStateMachineEnabled << endl;
+  std::cout << "WASM: Model Configuration : AutopilotLawsEnabled         = " << autopilotLawsEnabled << endl;
+  std::cout << "WASM: Model Configuration : FlyByWireEnabled             = " << flyByWireEnabled << endl;
+  std::cout << "WASM: Autopilot Configuration : CustomFlightGuidanceEnabled = " << customFlightGuidanceEnabled << endl;
+  std::cout << "WASM: Autopilot Configuration : FlightDirectorSmoothingEnabled = " << flightDirectorSmoothingEnabled
+            << endl;
+  std::cout << "WASM: Autopilot Configuration : FlightDirectorSmoothingFactor = " << flightDirectorSmoothingFactor
+            << endl;
+  std::cout << "WASM: Autopilot Configuration : FlightDirectorSmoothingLimit = " << flightDirectorSmoothingLimit
+            << endl;
 }
 
 void FlyByWireInterface::initializeThrottles() {
@@ -821,4 +850,18 @@ double FlyByWireInterface::calculateDeadzone(double deadzone, double target, dou
     return target;
   }
   return input;
+}
+
+double FlyByWireInterface::smoothFlightDirector(double sampleTime,
+                                                double factor,
+                                                double limit,
+                                                double currentValue,
+                                                double targetValue) {
+  double difference = (targetValue - currentValue);
+  if (difference >= 0) {
+    difference = min(+1.0 * limit, difference);
+  } else {
+    difference = max(-1.0 * limit, difference);
+  }
+  return currentValue + (difference * min(1.0, sampleTime * factor));
 }

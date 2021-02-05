@@ -53,6 +53,9 @@ class FlyByWireInterface {
 
   double previousSimulationTime = 0;
 
+  bool flightDirectorSmoothingEnabled = false;
+  double flightDirectorSmoothingFactor = 0;
+  double flightDirectorSmoothingLimit = 0;
   bool customFlightGuidanceEnabled = false;
   bool autopilotStateMachineEnabled = false;
   bool autopilotLawsEnabled = false;
@@ -135,10 +138,16 @@ class FlyByWireInterface {
 
   bool updateFlyByWire(double sampleTime);
 
+  void setupLocalVariables();
+
+  void loadConfiguration();
+
   void initializeThrottles();
 
   bool processThrottles();
 
   double calculateDeadzones(double deadzone, double input);
   double calculateDeadzone(double deadzone, double target, double input);
+
+  double smoothFlightDirector(double sampleTime, double factor, double limit, double currentValue, double targetValue);
 };
