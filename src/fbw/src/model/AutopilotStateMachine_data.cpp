@@ -234,9 +234,13 @@ Parameters_AutopilotStateMachine_T AutopilotStateMachineModelClass::AutopilotSta
     }
   },
 
+  0.0,
+
   1.0,
 
   -1.0,
+
+  0.0,
 
   0,
 
@@ -363,7 +367,7 @@ Parameters_AutopilotStateMachine_T AutopilotStateMachineModelClass::AutopilotSta
 
   0.0,
 
-  0,
+  1000.0,
 
-  0
+  -1.0
 };
