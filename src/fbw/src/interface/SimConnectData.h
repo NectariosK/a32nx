@@ -63,8 +63,6 @@ struct SimData {
   unsigned long long ap_fd_2_active;
   double ap_V_c_kn;
   double ap_H_c_ft;
-  double ap_Psi_c_deg;
-  double ap_H_dot_c_ft_min;
   double simulationTime;
   double simulation_rate;
   double ice_structure_percent;
@@ -88,8 +86,11 @@ struct SimData {
   double engine_2_thrust_lbf;
   unsigned long long nav_valid;
   double nav_loc_deg;
-  double nav_radial_error_deg;
+  double nav_dme_valid;
   double nav_dme_nmi;
+  double nav_loc_valid;
+  double nav_loc_error_deg;
+  double nav_gs_valid;
   double nav_gs_error_deg;
   unsigned long long isAutoThrottleActive;
   double engine_n1_1;
@@ -155,12 +156,14 @@ struct ClientDataAutopilotStateMachine {
   double vertical_mode;
   double vertical_mode_armed;
   double mode_reversion;
+  double mode_reversion_TRK_FPA;
   double autothrust_mode;
   double Psi_c_deg;
   double H_c_ft;
   double H_dot_c_fpm;
   double FPA_c_deg;
-  double V_SRS_c_kn;
+  double V_c_kn;
+  double ALT_soft_mode_active;
 };
 
 struct ClientDataAutopilotLaws {
@@ -184,6 +187,8 @@ struct ClientDataLocalVariables {
   double accelerationAltitude;
   double accelerationAltitudeEngineOut;
   double accelerationAltitudeGoAround;
+  double cruiseAltitude;
+  double directToTrigger;
   double fcuTrkFpaModeActive;
   double fcuSelectedVs;
   double fcuSelectedFpa;

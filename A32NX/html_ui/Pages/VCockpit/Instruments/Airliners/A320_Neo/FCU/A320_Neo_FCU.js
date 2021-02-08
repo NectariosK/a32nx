@@ -489,6 +489,9 @@ class A320_Neo_FCU_Mode extends A320_Neo_FCU_Component {
         this.refresh(false, 0, true);
     }
     update(_deltaTime) {
+        if (SimVar.GetSimVarValue("L:A32NX_FCU_MODE_REVERSION_TRK_FPA_ACTIVE", "Bool")) {
+            SimVar.SetSimVarValue("L:A32NX_TRK_FPA_MODE_ACTIVE", "Bool", 0);
+        }
         const _isTRKFPADisplayMode = SimVar.GetSimVarValue("L:A32NX_TRK_FPA_MODE_ACTIVE", "Bool");
         this.refresh(_isTRKFPADisplayMode, SimVar.GetSimVarValue("L:XMLVAR_LTS_Test", "Bool"));
     }

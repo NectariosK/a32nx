@@ -111,6 +111,7 @@ class FlyByWireInterface {
   ID idFcuLocModeActive;
   ID idFcuApprModeActive;
   ID idFcuModeReversionActive;
+  ID idFcuModeReversionTrkFpaActive;
 
   ID idFlightGuidanceCrossTrackError;
   ID idFlightGuidanceTrackAngleError;

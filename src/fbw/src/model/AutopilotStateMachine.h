@@ -22,7 +22,8 @@ typedef struct {
   ap_lateral Delay_DSTATE;
   real_T Delay_DSTATE_d[100];
   real_T Delay_DSTATE_c[100];
-  real_T Delay_DSTATE_e;
+  real_T Delay_DSTATE_o;
+  real_T Delay_DSTATE_b;
   real_T local_H_fcu_ft;
   real_T local_H_constraint_ft;
   real_T eventTime;
@@ -81,9 +82,12 @@ typedef struct {
 struct Parameters_AutopilotStateMachine_T_ {
   ap_sm_output ap_sm_output_MATLABStruct;
   real_T RateLimiterDynamicVariableTs_InitialCondition;
+  real_T RateLimiterDynamicVariableTs_InitialCondition_o;
   real_T Debounce_Value;
+  real_T Debounce_Value_j;
   real_T CompareToConstant_const;
   real_T CompareToConstant_const_a;
+  real_T CompareToConstant_const_c;
   boolean_T DetectIncrease_vinit;
   boolean_T DetectIncrease1_vinit;
   boolean_T DetectIncrease2_vinit;
@@ -118,6 +122,8 @@ struct Parameters_AutopilotStateMachine_T_ {
   real_T Delay_InitialCondition_m;
   real_T Raising_Value;
   real_T Falling_Value;
+  real_T Raising_Value_k;
+  real_T Falling_Value_f;
 };
 
 extern const ap_sm_input AutopilotStateMachine_rtZap_sm_input;
@@ -157,6 +163,7 @@ class AutopilotStateMachineModelClass {
   void AutopilotStateMachine_RWY_TRK_entry(const ap_sm_output *BusAssignment);
   void AutopilotStateMachine_GA_TRK_entry(const ap_sm_output *BusAssignment);
   void AutopilotStateMachine_ON(const ap_sm_output *BusAssignment);
+  void AutopilotStateMachine_GA_TRK_during(void);
   boolean_T AutopilotStateMachine_OFF_TO_HDG(const ap_sm_output *BusAssignment);
   boolean_T AutopilotStateMachine_OFF_TO_NAV(const ap_sm_output *BusAssignment);
   boolean_T AutopilotStateMachine_OFF_TO_RWY(const ap_sm_output *BusAssignment);

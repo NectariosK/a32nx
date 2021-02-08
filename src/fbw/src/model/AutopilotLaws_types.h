@@ -35,16 +35,13 @@ typedef struct {
   real_T bx_m_s2;
   real_T by_m_s2;
   real_T bz_m_s2;
-  boolean_T ap_fd_active;
-  real_T ap_V_c_kn;
-  real_T ap_H_c_ft;
-  real_T ap_Psi_c_deg;
-  real_T ap_H_dot_c_ft_min;
-  real_T ap_FPA_c_deg;
   boolean_T nav_valid;
   real_T nav_loc_deg;
-  real_T nav_radial_error_deg;
+  real_T nav_dme_valid;
   real_T nav_dme_nmi;
+  boolean_T nav_loc_valid;
+  real_T nav_loc_error_deg;
+  boolean_T nav_gs_valid;
   real_T nav_gs_error_deg;
   real_T flight_guidance_xtk_nmi;
   real_T flight_guidance_tae_deg;
@@ -59,6 +56,7 @@ typedef struct {
   real_T acceleration_altitude;
   real_T acceleration_altitude_engine_out;
   real_T acceleration_altitude_go_around;
+  real_T cruise_altitude;
   real_T gear_strut_compression_1;
   real_T gear_strut_compression_2;
   real_T zeta_pos;
@@ -82,12 +80,14 @@ typedef struct {
   real_T vertical_mode;
   real_T vertical_mode_armed;
   real_T mode_reversion;
+  boolean_T mode_reversion_TRK_FPA;
   real_T autothrust_mode;
   real_T Psi_c_deg;
   real_T H_c_ft;
   real_T H_dot_c_fpm;
   real_T FPA_c_deg;
-  real_T V_SRS_c_kn;
+  real_T V_c_kn;
+  boolean_T ALT_soft_mode_active;
 } ap_raw_laws_input;
 
 #endif
@@ -127,16 +127,13 @@ typedef struct {
   real_T bx_m_s2;
   real_T by_m_s2;
   real_T bz_m_s2;
-  boolean_T ap_fd_active;
-  real_T ap_V_c_kn;
-  real_T ap_H_c_ft;
-  real_T ap_Psi_c_deg;
-  real_T ap_H_dot_c_ft_min;
-  real_T ap_FPA_c_deg;
   boolean_T nav_valid;
   real_T nav_loc_deg;
-  real_T nav_radial_error_deg;
+  real_T nav_dme_valid;
   real_T nav_dme_nmi;
+  boolean_T nav_loc_valid;
+  real_T nav_loc_error_deg;
+  boolean_T nav_gs_valid;
   real_T nav_gs_error_deg;
   real_T flight_guidance_xtk_nmi;
   real_T flight_guidance_tae_deg;
@@ -151,6 +148,7 @@ typedef struct {
   real_T acceleration_altitude;
   real_T acceleration_altitude_engine_out;
   real_T acceleration_altitude_go_around;
+  real_T cruise_altitude;
   real_T on_ground;
   real_T zeta_deg;
   real_T throttle_lever_1_pos;
