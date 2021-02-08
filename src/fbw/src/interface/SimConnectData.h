@@ -86,11 +86,11 @@ struct SimData {
   double engine_2_thrust_lbf;
   unsigned long long nav_valid;
   double nav_loc_deg;
-  double nav_dme_valid;
+  unsigned long long nav_dme_valid;
   double nav_dme_nmi;
-  double nav_loc_valid;
+  unsigned long long nav_loc_valid;
   double nav_loc_error_deg;
-  double nav_gs_valid;
+  unsigned long long nav_gs_valid;
   double nav_gs_error_deg;
   unsigned long long isAutoThrottleActive;
   double engine_n1_1;

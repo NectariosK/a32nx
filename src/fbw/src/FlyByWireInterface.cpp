@@ -183,11 +183,11 @@ bool FlyByWireInterface::updateAutopilotStateMachine(double sampleTime) {
     autopilotStateMachine.AutopilotStateMachine_U.in.data.bz_m_s2 = simData.bz_m_s2;
     autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_valid = (simData.nav_valid != 0);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_loc_deg = simData.nav_loc_deg;
-    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_dme_valid = simData.nav_dme_valid;
+    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_dme_valid = (simData.nav_dme_valid != 0);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_dme_nmi = simData.nav_dme_nmi;
-    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_loc_valid = simData.nav_loc_valid;
+    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_loc_valid = (simData.nav_loc_valid != 0);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_loc_error_deg = simData.nav_loc_error_deg;
-    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_gs_valid = simData.nav_gs_valid;
+    autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_gs_valid = (simData.nav_gs_valid != 0);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.nav_gs_error_deg = simData.nav_gs_error_deg;
     autopilotStateMachine.AutopilotStateMachine_U.in.data.flight_guidance_xtk_nmi =
         customFlightGuidanceEnabled ? get_named_variable_value(idFlightGuidanceCrossTrackError)
@@ -377,11 +377,11 @@ bool FlyByWireInterface::updateAutopilotLaws(double sampleTime) {
     autopilotLaws.AutopilotLaws_U.in.data.bz_m_s2 = simData.bz_m_s2;
     autopilotLaws.AutopilotLaws_U.in.data.nav_valid = (simData.nav_valid != 0);
     autopilotLaws.AutopilotLaws_U.in.data.nav_loc_deg = simData.nav_loc_deg;
-    autopilotLaws.AutopilotLaws_U.in.data.nav_dme_valid = simData.nav_dme_valid;
+    autopilotLaws.AutopilotLaws_U.in.data.nav_dme_valid = (simData.nav_dme_valid != 0);
     autopilotLaws.AutopilotLaws_U.in.data.nav_dme_nmi = simData.nav_dme_nmi;
-    autopilotLaws.AutopilotLaws_U.in.data.nav_loc_valid = simData.nav_loc_valid;
+    autopilotLaws.AutopilotLaws_U.in.data.nav_loc_valid = (simData.nav_loc_valid != 0);
     autopilotLaws.AutopilotLaws_U.in.data.nav_loc_error_deg = simData.nav_loc_error_deg;
-    autopilotLaws.AutopilotLaws_U.in.data.nav_gs_valid = simData.nav_gs_valid;
+    autopilotLaws.AutopilotLaws_U.in.data.nav_gs_valid = (simData.nav_gs_valid != 0);
     autopilotLaws.AutopilotLaws_U.in.data.nav_gs_error_deg = simData.nav_gs_error_deg;
     autopilotLaws.AutopilotLaws_U.in.data.flight_guidance_xtk_nmi =
         customFlightGuidanceEnabled ? get_named_variable_value(idFlightGuidanceCrossTrackError)
