@@ -602,27 +602,27 @@ void AutopilotLawsModelClass::step()
 
    case 1:
     rtb_Mod2 = rtb_out_l * look1_binlxpw(AutopilotLaws_U.in.data.V_tas_kn,
-      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_k, AutopilotLaws_P.ScheduledGain_Table_h, 3U);
+      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_k, AutopilotLaws_P.ScheduledGain_Table_h, 5U);
     break;
 
    case 2:
     rtb_Mod2 = rtb_out * look1_binlxpw(AutopilotLaws_U.in.data.V_tas_kn,
-      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_h, AutopilotLaws_P.ScheduledGain_Table_g, 3U);
+      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_h, AutopilotLaws_P.ScheduledGain_Table_g, 5U);
     break;
 
    case 3:
     rtb_Mod2 = rtb_out_cj * look1_binlxpw(AutopilotLaws_U.in.data.V_tas_kn,
-      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_b, AutopilotLaws_P.ScheduledGain_Table_f, 3U);
+      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_b, AutopilotLaws_P.ScheduledGain_Table_f, 5U);
     break;
 
    case 4:
     rtb_Mod2 = rtb_Divide_e * look1_binlxpw(AutopilotLaws_U.in.data.V_tas_kn,
-      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_hn, AutopilotLaws_P.ScheduledGain_Table_m, 3U);
+      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_hn, AutopilotLaws_P.ScheduledGain_Table_m, 5U);
     break;
 
    case 5:
     rtb_Mod2 = rtb_Minup * look1_binlxpw(AutopilotLaws_U.in.data.V_tas_kn,
-      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_m, AutopilotLaws_P.ScheduledGain_Table_hc, 3U);
+      AutopilotLaws_P.ScheduledGain_BreakpointsForDimension1_m, AutopilotLaws_P.ScheduledGain_Table_hc, 5U);
     break;
 
    default:

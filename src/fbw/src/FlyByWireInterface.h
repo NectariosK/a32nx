@@ -92,6 +92,8 @@ class FlyByWireInterface {
   ID idFmaLateralArmed;
   ID idFmaVerticalMode;
   ID idFmaVerticalArmed;
+  ID idFmaSoftAltModeActive;
+  ID idFmaApproachCapability;
 
   ID idFlightDirectorBank;
   ID idFlightDirectorPitch;
@@ -127,6 +129,7 @@ class FlyByWireInterface {
   ID idFmgcAccelerationAltitude;
   ID idFmgcAccelerationAltitudeEngineOut;
   ID idFmgcAccelerationAltitudeGoAround;
+  ID idFmgcCruiseAltitude;
 
   ap_raw_laws_input autopilotStateMachineOutput;
   ap_raw_output autopilotLawsOutput;

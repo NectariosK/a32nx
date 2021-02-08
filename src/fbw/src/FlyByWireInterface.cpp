@@ -125,7 +125,7 @@ bool FlyByWireInterface::readDataAndLocalVariables(double sampleTime) {
       get_named_variable_value(idFmgcAccelerationAltitude),
       get_named_variable_value(idFmgcAccelerationAltitudeEngineOut),
       get_named_variable_value(idFmgcAccelerationAltitudeGoAround),
-      0,
+      get_named_variable_value(idFmgcCruiseAltitude),
       0,
       get_named_variable_value(idFcuTrkFpaModeActive),
       get_named_variable_value(idFcuSelectedVs),
@@ -213,7 +213,8 @@ bool FlyByWireInterface::updateAutopilotStateMachine(double sampleTime) {
         get_named_variable_value(idFmgcAccelerationAltitudeEngineOut);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.acceleration_altitude_go_around =
         get_named_variable_value(idFmgcAccelerationAltitudeGoAround);
-    autopilotStateMachine.AutopilotStateMachine_U.in.data.cruise_altitude = 0;
+    autopilotStateMachine.AutopilotStateMachine_U.in.data.cruise_altitude =
+        get_named_variable_value(idFmgcCruiseAltitude);
     autopilotStateMachine.AutopilotStateMachine_U.in.data.throttle_lever_1_pos = simData.throttle_lever_1_pos;
     autopilotStateMachine.AutopilotStateMachine_U.in.data.throttle_lever_2_pos = simData.throttle_lever_2_pos;
     autopilotStateMachine.AutopilotStateMachine_U.in.data.gear_strut_compression_1 = simData.gear_animation_pos_1;
@@ -317,6 +318,27 @@ bool FlyByWireInterface::updateAutopilotStateMachine(double sampleTime) {
   set_named_variable_value(idFmaLateralArmed, autopilotStateMachineOutput.lateral_mode_armed);
   set_named_variable_value(idFmaVerticalMode, autopilotStateMachineOutput.vertical_mode);
   set_named_variable_value(idFmaVerticalArmed, autopilotStateMachineOutput.vertical_mode_armed);
+  set_named_variable_value(idFmaSoftAltModeActive, autopilotStateMachineOutput.ALT_soft_mode_active);
+
+  // calculate and set approach capability
+  bool landModeArmedOrActive = (isLocArmed || isLocEngaged) && (isGsArmed || isGsEngaged);
+  int numberOfAutopilotsEngaged = autopilotStateMachineOutput.enabled_AP1 + autopilotStateMachineOutput.enabled_AP2;
+  int autoThrustEngaged = simData.isAutoThrottleActive;
+  bool radioAltimeterAvailable = (simData.H_radio_ft <= 5000);
+  int approachCapability = 0;
+  if (landModeArmedOrActive) {
+    approachCapability = 1;
+    if (numberOfAutopilotsEngaged >= 1) {
+      approachCapability = 2;
+      if (autoThrustEngaged && radioAltimeterAvailable) {
+        approachCapability = 3;
+        if (numberOfAutopilotsEngaged == 2) {
+          approachCapability = 4;
+        }
+      }
+    }
+  }
+  set_named_variable_value(idFmaApproachCapability, approachCapability);
 
   // return result ----------------------------------------------------------------------------------------------------
   return true;
@@ -636,6 +658,8 @@ void FlyByWireInterface::setupLocalVariables() {
   idFmaLateralArmed = register_named_variable("A32NX_FMA_LATERAL_ARMED");
   idFmaVerticalMode = register_named_variable("A32NX_FMA_VERTICAL_MODE");
   idFmaVerticalArmed = register_named_variable("A32NX_FMA_VERTICAL_ARMED");
+  idFmaSoftAltModeActive = register_named_variable("A32NX_FMA_SOFT_ALT_MODE");
+  idFmaApproachCapability = register_named_variable("A32NX_ApproachCapability");
 
   // register L variable for flight director
   idFlightDirectorBank = register_named_variable("A32NX_FLIGHT_DIRECTOR_BANK");
@@ -662,6 +686,7 @@ void FlyByWireInterface::setupLocalVariables() {
   idFmgcAccelerationAltitude = register_named_variable("AIRLINER_ACC_ALT");
   idFmgcAccelerationAltitudeEngineOut = register_named_variable("AIRLINER_ACC_ALT_ENGINEOUT");
   idFmgcAccelerationAltitudeGoAround = register_named_variable("AIRLINER_ACC_ALT_GOAROUND");
+  idFmgcCruiseAltitude = register_named_variable("AIRLINER_CRUISE_ALTITUDE");
 
   idFlightGuidanceCrossTrackError = register_named_variable("A32NX_FG_CROSS_TRACK_ERROR");
   idFlightGuidanceTrackAngleError = register_named_variable("A32NX_FG_TRACK_ANGLE_ERROR");

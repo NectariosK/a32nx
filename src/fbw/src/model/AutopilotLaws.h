@@ -74,13 +74,13 @@ typedef struct {
 struct Parameters_AutopilotLaws_T_ {
   ap_laws_output ap_laws_output_MATLABStruct;
   real_T ScheduledGain_BreakpointsForDimension1[3];
-  real_T ScheduledGain_BreakpointsForDimension1_k[4];
-  real_T ScheduledGain_BreakpointsForDimension1_h[4];
-  real_T ScheduledGain_BreakpointsForDimension1_b[4];
+  real_T ScheduledGain_BreakpointsForDimension1_k[6];
+  real_T ScheduledGain_BreakpointsForDimension1_h[6];
+  real_T ScheduledGain_BreakpointsForDimension1_b[6];
   real_T ScheduledGain_BreakpointsForDimension1_a[5];
-  real_T ScheduledGain_BreakpointsForDimension1_hn[4];
+  real_T ScheduledGain_BreakpointsForDimension1_hn[6];
   real_T ScheduledGain_BreakpointsForDimension1_e[5];
-  real_T ScheduledGain_BreakpointsForDimension1_m[4];
+  real_T ScheduledGain_BreakpointsForDimension1_m[6];
   real_T ScheduledGain_BreakpointsForDimension1_hy[5];
   real_T LagFilter1_C1;
   real_T LagFilter_C1;
@@ -109,13 +109,13 @@ struct Parameters_AutopilotLaws_T_ {
   real_T RateLimiterVariableTs_InitialCondition_p;
   real_T DiscreteTimeIntegratorVariableTs_LowerLimit;
   real_T ScheduledGain_Table[3];
-  real_T ScheduledGain_Table_h[4];
-  real_T ScheduledGain_Table_g[4];
-  real_T ScheduledGain_Table_f[4];
+  real_T ScheduledGain_Table_h[6];
+  real_T ScheduledGain_Table_g[6];
+  real_T ScheduledGain_Table_f[6];
   real_T ScheduledGain_Table_p[5];
-  real_T ScheduledGain_Table_m[4];
+  real_T ScheduledGain_Table_m[6];
   real_T ScheduledGain_Table_pf[5];
-  real_T ScheduledGain_Table_hc[4];
+  real_T ScheduledGain_Table_hc[6];
   real_T ScheduledGain_Table_i[5];
   real_T DiscreteTimeIntegratorVariableTs_UpperLimit;
   real_T Subsystem_Value;

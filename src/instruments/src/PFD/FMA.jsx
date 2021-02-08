@@ -286,7 +286,11 @@ const B1Cell = () => {
         text = 'OP CLB';
         break;
     case 10:
-        text = 'ALT';
+        if (getSimVar('L:A32NX_FMA_SOFT_ALT_MODE', 'Bool')) {
+            text = 'ALT CRZ';
+        } else {
+            text = 'ALT';
+        }
         break;
     case 11:
         text = 'ALT*';
