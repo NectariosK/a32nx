@@ -708,7 +708,7 @@ void FlyByWireInterface::loadConfiguration() {
   autopilotLawsEnabled = configuration.GetBoolean("Model", "AutopilotLawsEnabled", true);
   flyByWireEnabled = configuration.GetBoolean("Model", "FlyByWireEnabled", true);
   customFlightGuidanceEnabled = configuration.GetBoolean("Autopilot", "CustomFlightGuidanceEnabled", false);
-  flightDirectorSmoothingEnabled = configuration.GetBoolean("Autopilot", "FlightDirectorSmoothingEnabled", false);
+  flightDirectorSmoothingEnabled = configuration.GetBoolean("Autopilot", "FlightDirectorSmoothingEnabled", true);
   flightDirectorSmoothingFactor = configuration.GetReal("Autopilot", "FlightDirectorSmoothingFactor", 2.5);
   flightDirectorSmoothingLimit = configuration.GetReal("Autopilot", "FlightDirectorSmoothingLimit", 20);
   std::cout << "WASM: Model Configuration : AutopilotStateMachineEnabled = " << autopilotStateMachineEnabled << endl;
