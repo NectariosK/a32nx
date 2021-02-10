@@ -8,25 +8,34 @@
 
 ⚠️ The custom autopilot system is not yet on study level. In order to achieve this level a longer effort is needed. The system is a large improvement over the default implementation and there is no reason to hold it back longer than necessary.
 
+⚠️ When starting in flight, the default AP might be actived without seeing it. In that case you can disconnect it by using `AUTOPILOT OFF` event. Default keyboard mapping `Shift+Alt+Z`. Often this event is used for sidestick disconnect button.
+
 ℹ️ Tuning is a large effort to be done for differnt flight conditions like speed, configuration, weight and center-of-gravity (CG). You can help by reporting issues in certain flight conditions. Please take note of important conditions mentioned before.
 
 #### Not solved or missing
 
 - :x: custom ATHR system is not yet available
+- :x: FMA indications for ATHR system are missing
 - :x: due to missing custom ATHR system, the (OP) CLB/DES modes might need manual thrust control
       -> a simple and hacky workaround has been added though
-- :x: after a longer pause the custom autopilot system can goes crazy
+- :x: due to this workaround, the engine EGT can go into read area when in (OP) CLB/DES (see workaround above)
+- :x: after a longer pause the custom autopilot system can go crazy
 - :x: due to lack of VNAV, DES mode is currently only using SPD/MACH
 - :x: CLB and DES do not respect altitude constraints (contraints are supported but are lacking proper input)
-- :x: Go Around modes are missing
 - :x: Transitions might not be as they should
 - :x: FD off/on does not deactivate all FMA items
 - :x: Engagement of AP with FD off is incorrect
 - :x: AP disconnect does not trigger master warning etc.
 - :x: AP does not disconnect with rudder or sidestick input
-- :x: NAV mode can always be armed or engaged
 - :x: NAV mode being armed might show dashes in the FCU instead of selected HDG
 - :x: Engine out operations are not yet considered
+- :x: AP performance when flying turbulence might not be satisfying
+- :x: AP is not disconnected due to pilot input (sidestick, rudder) or turbulence
+- :x: FMA or engagement of AP when changing position with slew might be wrong
+
+#### First implementation available
+- :small_orange_diamond: Principle go-around mode has been added but not all conditions are respected yet
+- :small_orange_diamond: NAV mode is for the time being using default flight plan manager until the custom is ready
 
 #### Considered solved
 
