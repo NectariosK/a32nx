@@ -192,6 +192,16 @@ typedef struct {
 
 #endif
 
+#ifndef DEFINED_TYPEDEF_FOR_ap_output_law_
+#define DEFINED_TYPEDEF_FOR_ap_output_law_
+
+typedef struct {
+  real_T flight_director;
+  real_T autopilot;
+} ap_output_law;
+
+#endif
+
 #ifndef struct_tag_skA4KFEZ4HPkJJBOYCrevdH
 #define struct_tag_skA4KFEZ4HPkJJBOYCrevdH
 
