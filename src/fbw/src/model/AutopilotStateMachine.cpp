@@ -776,6 +776,11 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_VS_during(void)
   AutopilotStateMachine_B.out.mode_reversion = false;
 }
 
+void AutopilotStateMachineModelClass::AutopilotStateMachine_ALT_during(void)
+{
+  AutopilotStateMachine_B.out.V_c_kn = AutopilotStateMachine_B.BusAssignment_g.input.V_fcu_kn;
+}
+
 void AutopilotStateMachineModelClass::AutopilotStateMachine_ALT_exit(void)
 {
   AutopilotStateMachine_B.out.ALT_soft_mode_active = false;
@@ -838,13 +843,13 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_ALT(void)
         AutopilotStateMachine_ALT_exit();
         AutopilotStateMachine_DWork.is_ON = AutopilotStateMachine_IN_VS;
         AutopilotStateMachine_VS_entry();
+      } else if (AutopilotStateMachine_B.BusAssignment_g.input.ALT_push &&
+                 (AutopilotStateMachine_B.BusAssignment_g.input.H_constraint_ft != 0.0) && (tmp < 50.0)) {
+        AutopilotStateMachine_ALT_exit();
+        AutopilotStateMachine_DWork.is_ON = AutopilotStateMachine_IN_ALT_CST;
+        AutopilotStateMachine_ALT_CST_entry();
       } else {
-        if (AutopilotStateMachine_B.BusAssignment_g.input.ALT_push &&
-            (AutopilotStateMachine_B.BusAssignment_g.input.H_constraint_ft != 0.0) && (tmp < 50.0)) {
-          AutopilotStateMachine_ALT_exit();
-          AutopilotStateMachine_DWork.is_ON = AutopilotStateMachine_IN_ALT_CST;
-          AutopilotStateMachine_ALT_CST_entry();
-        }
+        AutopilotStateMachine_ALT_during();
       }
     }
   }
@@ -861,6 +866,7 @@ void AutopilotStateMachineModelClass::AutopilotStateMachine_ALT_entry(void)
   AutopilotStateMachine_B.out.mode_autothrust = athr_mode_SPEED;
   AutopilotStateMachine_B.out.law = vertical_law_ALT_HOLD;
   AutopilotStateMachine_B.out.H_c_ft = AutopilotStateMachine_B.BusAssignment_g.input.H_fcu_ft;
+  AutopilotStateMachine_B.out.V_c_kn = AutopilotStateMachine_B.BusAssignment_g.input.V_fcu_kn;
   AutopilotStateMachine_B.out.ALT_soft_mode_active = (std::abs(AutopilotStateMachine_B.BusAssignment_g.data.H_ind_ft -
     AutopilotStateMachine_B.BusAssignment_g.data.cruise_altitude) < 50.0);
 }
